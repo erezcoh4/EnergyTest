@@ -7,34 +7,57 @@
 // To operate it:
 // phi = Histo3DETest( Nbins , hD , hMC );
 // ---------------------------------------------------------------------------
+ETest::ETest(const int Nbins , bool flag_UNDERFLOW_OVERFLOW){
 
-
-double ETest::Histo3DETest(const int Nbins, const TH3* hD, const TH3* hMC , bool flag_UNDERFLOW_OVERFLOW){
-    
-    //    std::cout << "flag_UNDERFLOW_OVERFLOW = " << flag_UNDERFLOW_OVERFLOW << std::endl;
-    // Definitions
-    const int N     = (flag_UNDERFLOW_OVERFLOW) ? Nbins + 2 : Nbins;
-    int     Low     = (flag_UNDERFLOW_OVERFLOW) ? 0         : 0;
-    int     High    = (flag_UNDERFLOW_OVERFLOW) ? Nbins + 1 : Nbins ;
-    double  phiD    = 0.    , phiMC=0.      , phiDMC=0.;
-    double step     = 1./(N-2);
-    double stepsq   = pow(step,2);
-    double d000     = log(0.66170*step);                    //"cube line picking" - avg. dist between 2 points
-    double nD       = 0.    , nMC = 0.;
+    N       = (flag_UNDERFLOW_OVERFLOW) ? Nbins + 2 : Nbins;
+    Low     = (flag_UNDERFLOW_OVERFLOW) ? 0         : 0;
+    High    = (flag_UNDERFLOW_OVERFLOW) ? Nbins + 1 : Nbins ;
+    phiD    = 0. ;
+    phiMC   = 0. ;
+    phiDMC  = 0. ;
+    step    = 1./(N-2);
+    stepsq  = pow(step,2);
+    d000    = log(0.66170*step);                    //"cube line picking" - avg. dist between 2 points
+    nD      = 0.    ;
+    nMC     = 0.;
     // Declared variables are allocated on the stack, which has a fixed size. Allocated variables are put in the heap which is basically the rest of memory. So manually emulate the 3D arrays
-    double *** D    = new double **[N];
-    double *** MC   = new double **[N];
-    double *** psi  = new double **[N];
-    for (int ialloc=0; ialloc<N; ++ialloc) {
-        D[ialloc]   = new double*[N];
-        MC[ialloc]  = new double*[N];
-        psi[ialloc] = new double*[N];
-        for (int jalloc=0; jalloc<N; ++jalloc) {
-            D[ialloc][jalloc]   = new double[N];
-            MC[ialloc][jalloc]  = new double[N];
-            psi[ialloc][jalloc] = new double[N];
-        }
-    }
+//    D    = new double **[N];
+//    MC   = new double **[N];
+//    psi  = new double **[N];
+//    for (int ialloc=0; ialloc<N; ++ialloc) {
+//        D[ialloc]   = new double*[N];
+//        MC[ialloc]  = new double*[N];
+//        psi[ialloc] = new double*[N];
+//        for (int jalloc=0; jalloc<N; ++jalloc) {
+//            D[ialloc][jalloc]   = new double[N];
+//            MC[ialloc][jalloc]  = new double[N];
+//            psi[ialloc][jalloc] = new double[N];
+//        }
+//    }
+ 
+}
+
+
+ETest::~ETest(){
+    // delete them before the end of the routine (at the same level of scope as the allocates) to avoid memory leaks
+//    for (int ialloc=N; --ialloc>=0;) {
+//        for (int jalloc=N; --jalloc>=0;) {
+//            delete [] psi[ialloc][jalloc];
+//            delete [] MC[ialloc][jalloc];
+//            delete [] D[ialloc][jalloc];
+//        }
+//        delete [] psi[ialloc];
+//        delete [] MC[ialloc];
+//        delete [] D[ialloc];
+//    }
+//    delete [] psi;
+//    delete [] MC;
+//    delete [] D;
+}
+
+
+double ETest::Histo3DETest(const TH3* hD, const TH3* hMC){
+    
     // Initilization
     for (int i1 = Low; i1 < High; i1++){    // move to arrays instead of histogram to reduce expensive GetBinContent() calculation time
         for (int i2 = Low; i2 < High; i2++) {
@@ -48,7 +71,7 @@ double ETest::Histo3DETest(const int Nbins, const TH3* hD, const TH3* hMC , bool
         }
     }
     // Calculation...
-    double Dpart = 0,  MCpart = 0, DMCpart = 0;
+    Dpart = MCpart = DMCpart = 0;
     for (int i1 = 0; i1 < N; i1++){
         for (int i2 = 0; i2 < N; i2++) {
             for (int i3 = 0; i3 < N; i3++) {
@@ -88,21 +111,7 @@ double ETest::Histo3DETest(const int Nbins, const TH3* hD, const TH3* hMC , bool
     phiMC   = -MCpart /(nMC * nMC);
     phiDMC  = DMCpart /(nD  * nMC);
     //        Printf("ø(D) = %f, ø(MC) = %f, ø(D-MC) = %f",phiD,phiMC,phiDMC);
-    // delete them before the end of the routine (at the same level of scope as the allocates) to avoid memory leaks
-    for (int ialloc=N; --ialloc>=0;) {
-        for (int jalloc=N; --jalloc>=0;) {
-            delete [] psi[ialloc][jalloc];
-            delete [] MC[ialloc][jalloc];
-            delete [] D[ialloc][jalloc];
-        }
-        delete [] psi[ialloc];
-        delete [] MC[ialloc];
-        delete [] D[ialloc];
-    }
-    delete [] psi;
-    delete [] MC;
-    delete [] D;
-    
+
     return ( phiD + phiMC + phiDMC );
 }
 

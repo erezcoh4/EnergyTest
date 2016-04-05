@@ -24,7 +24,8 @@
 #include "TError.h"
 #include <cmath>
 #include <iostream>
-
+#include "MySoftwarePackage/TPlots.h"
+#define MAX 50
 /**
    \class ETest
    User defined class ETest ... these comments are used to generate
@@ -34,16 +35,23 @@ class ETest{
 
 public:
 
+    
+    int N;
+    int     Low  , High   ;
+    double phiD  , phiMC    , phiDMC    , step , stepsq    , d000  , nD    , nMC;
+//    double *** D , *** MC   , *** psi;
+    double D[MAX][MAX][MAX] , MC[MAX][MAX][MAX]   , psi[MAX][MAX][MAX];
+    double Dpart,  MCpart, DMCpart;
 
     
     /// Default constructor
-    ETest(){}
+    ETest (const int, bool flag_UNDERFLOW_OVERFLOW=false);
     
     /// Default destructor
-    ~ETest(){}
+    ~ETest();
     
     
-    double Histo3DETest(const int, const TH3*, const TH3*, bool flag_UNDERFLOW_OVERFLOW=false);
+    double Histo3DETest (const TH3*, const TH3*);
     
     
 };
