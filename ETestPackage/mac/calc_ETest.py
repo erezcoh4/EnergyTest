@@ -4,7 +4,8 @@ from ROOT import TFile , TTree
 from array import array
 import numpy as n
 
-rand    = TRandom3()
+r       = TRandom3()
+rand    = TRandom3((int(r.Uniform(10000)))
 
 DoUniformUniform    = True
 
@@ -29,8 +30,7 @@ if DoUniformUniform:
     
     
     Npoints = 135000
-    #Nsamples= 2
-    fNbins[0] = Nbins    
+    fNbins[0] = Nbins
 
     hFlat = ROOT.TH3F("hFlat_%d"%(Nbins),"Flat Distribution Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
     bin_content = Npoints/(Nbins*Nbins*Nbins)
