@@ -5,13 +5,13 @@ from array import array
 import numpy as n
 
 r       = TRandom3()
-rand    = TRandom3((int(r.Uniform(10000)))
+rand    = TRandom3(int(r.Uniform(10000)))
 
 DoUniformUniform    = True
 
 
 Nbins = 40
-Nsamples = 40
+Nsamples = 2
 
 FileName    = "ETestResults_Nbins_%d"%Nbins
 Path    = "/home/erez/EnergyTest/ETestResults"
@@ -54,7 +54,8 @@ if DoUniformUniform:
             hSmpl.Fill(x,y,z)
 
         Phi[0] = etest.ETestKnowingD ( hSmpl )
-        print "ETest statistic for N=%d bins, sample %d is %g"%(Nbins,sample,Phi)
+        if(sample%10==0):
+            print "ETest statistic for N=%d bins, sample %d is %g"%(Nbins,sample,Phi)
         TEtest.Fill()
         del hSmpl
 
