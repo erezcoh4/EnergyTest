@@ -2,25 +2,26 @@ import ROOT , sys
 from ROOT import ETest , TRandom3
 from ROOT import TFile , TTree
 from array import array
-import numpy as n
+#import numpy as n
 
 rand    = TRandom3()
 
 DoUniformUniform    = True
 
 
-Nbins = 10
+Nbins = 40
+Nsamples = 10
 
 FileName    = "ETestResults_Nbins_%d"%Nbins
-#Path    = "/home/erez/EnergyTest/ETestResults"
-Path    = "/Users/erezcohen/Desktop/EnergyTest/ETestResults"
+Path    = "/home/erez/EnergyTest/ETestResults"
+#Path    = "/Users/erezcohen/Desktop/EnergyTest/ETestResults"
 FileNumber  = int(sys.argv[1])
 FEtest  = ROOT.TFile(Path+"/"+FileName+"_%d.root"%FileNumber,"recreate");
 TEtest  = ROOT.TTree("ETestTree","ETest statistic");
-fNbins  = n.zeros(Nbins, dtype=int)
-Phi     = n.zeros(1, dtype=float)
-TEtest.Branch( "Nbins"      , fNbins, "Nbins/I" )
-TEtest.Branch( "phiFlatUni" , Phi   , "phiFlatUni/D" )
+#fNbins  = n.zeros(Nbins, dtype=int)
+#Phi     = n.zeros(1, dtype=float)
+#TEtest.Branch( "Nbins"      , fNbins, "Nbins/I" )
+#TEtest.Branch( "phiFlatUni" , Phi   , "phiFlatUni/D" )
 
 etest = ETest(Nbins)
 
@@ -28,7 +29,7 @@ if DoUniformUniform:
     
     
     Npoints = 135000
-    Nsamples= 2
+    #Nsamples= 2
         
 
     hFlat = ROOT.TH3F("hFlat_%d"%(Nbins),"Flat Distribution Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
@@ -53,7 +54,7 @@ if DoUniformUniform:
             hSmpl.Fill(x,y,z)
 
         Phi = etest.ETestKnowingD ( hSmpl )
-        print "ETest statistic for N=50 bins, sample %d is %g"%(sample,Phi)
+        print "ETest statistic for N=%d bins, sample %d is %g"%(Nbins,sample,Phi)
         TEtest.Fill()
         del hSmpl
 
