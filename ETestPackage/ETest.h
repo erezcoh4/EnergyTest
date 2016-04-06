@@ -51,7 +51,9 @@ public:
     ~ETest();
     
     
-    double Histo3DETest (const TH3*, const TH3*);
+    double  Histo3DETest (const TH3*, const TH3*);
+    double          SetD (const TH3* hD);
+    double ETestKnowingD (const TH3* hMC);
     
     
 };
