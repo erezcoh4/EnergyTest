@@ -1,0 +1,41 @@
+Sample 0
+ETest statistic for N=50 bins, sample 0 is 0.000410989
+Sample 1
+ETest statistic for N=50 bins, sample 1 is 0.000428425
+Sample 2
+ETest statistic for N=50 bins, sample 2 is 0.000504198
+Sample 3
+ETest statistic for N=50 bins, sample 3 is 0.000436532
+Sample 4
+ETest statistic for N=50 bins, sample 4 is 0.000448671
+Sample 5
+ETest statistic for N=50 bins, sample 5 is 0.000434997
+Sample 6
+ETest statistic for N=50 bins, sample 6 is 0.000496819
+Sample 7
+ETest statistic for N=50 bins, sample 7 is 0.000450037
+Sample 8
+ETest statistic for N=50 bins, sample 8 is 0.000499497
+Sample 9
+ETest statistic for N=50 bins, sample 9 is 0.000475967
+Sample 10
+ETest statistic for N=50 bins, sample 10 is 0.000387667
+Sample 11
+ETest statistic for N=50 bins, sample 11 is 0.000472794
+Sample 12
+ETest statistic for N=50 bins, sample 12 is 0.000511641
+Sample 13
+ETest statistic for N=50 bins, sample 13 is 0.000432205
+Sample 14
+ETest statistic for N=50 bins, sample 14 is 0.000447173
+Sample 15
+ETest statistic for N=50 bins, sample 15 is 0.000412689
+Sample 16
+ETest statistic for N=50 bins, sample 16 is 0.000424833
+Sample 17
+ETest statistic for N=50 bins, sample 17 is 0.000457213
+Sample 18
+ETest statistic for N=50 bins, sample 18 is 0.000375026
+Sample 19
+ETest statistic for N=50 bins, sample 19 is 0.000508667
+done filling 20 events in ETest statistic

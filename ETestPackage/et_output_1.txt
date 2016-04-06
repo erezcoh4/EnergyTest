@@ -1,0 +1,61 @@
+Sample 0
+ETest statistic for N=10 bins, sample 0 is 0.0114062
+Sample 1
+ETest statistic for N=10 bins, sample 1 is 0.0115272
+Sample 2
+ETest statistic for N=10 bins, sample 2 is 0.0118798
+Sample 3
+ETest statistic for N=10 bins, sample 3 is 0.011523
+Sample 4
+ETest statistic for N=10 bins, sample 4 is 0.0116294
+Sample 5
+ETest statistic for N=10 bins, sample 5 is 0.0115749
+Sample 6
+ETest statistic for N=10 bins, sample 6 is 0.011886
+Sample 7
+ETest statistic for N=10 bins, sample 7 is 0.0116366
+Sample 8
+ETest statistic for N=10 bins, sample 8 is 0.0118812
+Sample 9
+ETest statistic for N=10 bins, sample 9 is 0.0117701
+Sample 10
+ETest statistic for N=10 bins, sample 10 is 0.0112839
+Sample 11
+ETest statistic for N=10 bins, sample 11 is 0.0118193
+Sample 12
+ETest statistic for N=10 bins, sample 12 is 0.0119532
+Sample 13
+ETest statistic for N=10 bins, sample 13 is 0.0115387
+Sample 14
+ETest statistic for N=10 bins, sample 14 is 0.0115555
+Sample 15
+ETest statistic for N=10 bins, sample 15 is 0.0114337
+Sample 16
+ETest statistic for N=10 bins, sample 16 is 0.0114989
+Sample 17
+ETest statistic for N=10 bins, sample 17 is 0.0117085
+Sample 18
+ETest statistic for N=10 bins, sample 18 is 0.0112277
+Sample 19
+ETest statistic for N=10 bins, sample 19 is 0.0119588
+Sample 20
+ETest statistic for N=10 bins, sample 20 is 0.0116548
+Sample 21
+ETest statistic for N=10 bins, sample 21 is 0.01147
+Sample 22
+ETest statistic for N=10 bins, sample 22 is 0.0112584
+Sample 23
+ETest statistic for N=10 bins, sample 23 is 0.0115421
+Sample 24
+ETest statistic for N=10 bins, sample 24 is 0.011673
+Sample 25
+ETest statistic for N=10 bins, sample 25 is 0.0116582
+Sample 26
+ETest statistic for N=10 bins, sample 26 is 0.0117261
+Sample 27
+ETest statistic for N=10 bins, sample 27 is 0.0114304
+Sample 28
+ETest statistic for N=10 bins, sample 28 is 0.0117986
+Sample 29
+ETest statistic for N=10 bins, sample 29 is 0.0115278
+done filling 30 events in ETest statistic
