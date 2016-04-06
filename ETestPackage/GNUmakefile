@@ -9,7 +9,7 @@ OBJECTS = $(SOURCES:.cxx=.o)
 
 # include options for this package
 INCFLAGS  = -I.                       #Include itself
-INCFLAGS += -I$(LARLITE_USERDEVDIR)/mySoftware
+# INCFLAGS += -I$(LARLITE_USERDEVDIR)/mySoftware
 
 
 # platform-specific options
@@ -22,7 +22,7 @@ include $(LARLITE_BASEDIR)/Makefile/Makefile.${OSNAME}
 
 # set linker flags
 LDFLAGS += -L$(shell root-config --libdir) -lEG -lRooFit -lRooFitCore -lRooStats -lSpectrum -lHist 
-LDFLAGS += -L$(LARLITE_LIBDIR) -lMySoftware_MySoftwarePackage
+# LDFLAGS += -L$(LARLITE_LIBDIR) -lMySoftware_MySoftwarePackage
 
 # call the common GNUmakefile
 include $(LARLITE_BASEDIR)/Makefile/GNUmakefile.CORE

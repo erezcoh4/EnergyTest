@@ -9,88 +9,53 @@ rand    = TRandom3()
 DoUniformUniform    = True
 
 
+Nbins = 10
 
-FileName    = ""
+FileName    = "ETestResults_Nbins_%d"%Nbins
+#Path    = "/home/erez/EnergyTest/ETestResults"
+Path    = "/Users/erezcohen/Desktop/EnergyTest/ETestResults"
 FileNumber  = int(sys.argv[1])
-FEtest  = ROOT.TFile("~/Desktop/EnergyTest/AnaFiles/ETestResults_%d.root"%FileNumber,"recreate");
+FEtest  = ROOT.TFile(Path+"/"+FileName+"_%d.root"%FileNumber,"recreate");
 TEtest  = ROOT.TTree("ETestTree","ETest statistic");
-#Nbins = [10 ,20 ,30 ,40 , 50]
-Nbins = [10]
-#Phi10 = n.zeros(1, dtype=float)
-#TEtest.Branch( "Phi10" , Phi10 , "Phi10/D" )
-#Phi20 = n.zeros(1, dtype=float)
-#TEtest.Branch( "Phi20" , Phi20 , "Phi20/D" )
-#Phi30 = n.zeros(1, dtype=float)
-#TEtest.Branch( "Phi30" , Phi30 , "Phi30/D" )
-#Phi40 = n.zeros(1, dtype=float)
-#TEtest.Branch( "Phi40" , Phi40 , "Phi40/D" )
-#Nbins   = n.zeros(50, dtype=int)
+fNbins  = n.zeros(Nbins, dtype=int)
 Phi     = n.zeros(1, dtype=float)
-#TEtest.Branch( "Nbins"      , Nbins , "Nbins/I" )
+TEtest.Branch( "Nbins"      , fNbins, "Nbins/I" )
 TEtest.Branch( "phiFlatUni" , Phi   , "phiFlatUni/D" )
 
-etest = []
-hFlat = []
-hSmpl = []
-
+etest = ETest(Nbins)
 
 if DoUniformUniform:
     
     
     Npoints = 135000
     Nsamples= 2
-    
-    for i in range(0,len(Nbins)):
-        etest.append(ETest(Nbins[i]))
         
-        # for each binning, we create a sample of constant distribution over the unit cube
 
-        hFlat.append(ROOT.TH3F("hFlat_%d"%(Nbins[i]),"Flat Distribution Nbins=%d"%Nbins[i],Nbins[i],0,1,Nbins[i],0,1,Nbins[i],0,1))
-        bin_content = Npoints/(Nbins[i]*Nbins[i]*Nbins[i])
-        for i1 in range(1,Nbins[i]) :
-            for i2 in range(1,Nbins[i]) :
-                for i3 in range(1,Nbins[i]) :
-                    hFlat[i].SetBinContent(i1,i2,i3,bin_content);
+    hFlat = ROOT.TH3F("hFlat_%d"%(Nbins),"Flat Distribution Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
+    bin_content = Npoints/(Nbins*Nbins*Nbins)
+    for i1 in range(1,Nbins) :
+        for i2 in range(1,Nbins) :
+            for i3 in range(1,Nbins) :
+                hFlat.SetBinContent(i1,i2,i3,bin_content);
 
-        etest[i].SetD (hFlat[i])
+    etest.SetD(hFlat)
 
     for sample in range(0,Nsamples) :
         print "Sample %d" %(sample)
         
-        for i in range(0,len(Nbins)):
-            
-            # for each binning, we create a sample of uniform distribution over the unit cube
-            
-            hSmpl.append(ROOT.TH3F("hSmpl_%d_%d"%(sample,Nbins[i]),"Uniform sample Nbins=%d"%Nbins[i],Nbins[i],0,1,Nbins[i],0,1,Nbins[i],0,1))
+        hSmpl = ROOT.TH3F("hSmpl_%d_%d"%(sample,Nbins),"Uniform sample Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
         
         for j in range(0,Npoints) :
             
             x = rand.Uniform()
             y = rand.Uniform()
             z = rand.Uniform()
-            
-            for i in range(0,len(Nbins)):
-                
-                hSmpl[i].Fill(x,y,z)
+            hSmpl.Fill(x,y,z)
 
-
-#        Phi10[0] = etest[0].Histo3DETest( hSmpl[0] , hFlat[0] )
-#        print "ETest statistic for N=10 bins, sample %d is %g"%(sample,Phi10)
-#        Phi20[0] = etest[1].Histo3DETest( hSmpl[1] , hFlat[1] )
-#        print "ETest statistic for N=20 bins, sample %d is %g"%(sample,Phi20)
-#        Phi30[0] = etest[2].Histo3DETest( hSmpl[2] , hFlat[2] )
-#        print "ETest statistic for N=30 bins, sample %d is %g"%(sample,Phi30)
-#        Phi40[0] = etest[3].Histo3DETest( hSmpl[3] , hFlat[3] )
-#        print "ETest statistic for N=40 bins, sample %d is %g"%(sample,Phi40)
-#        Phi50[0] = etest[4].Histo3DETest( hSmpl[4] , hFlat[4] )
-#        print "ETest statistic for N=50 bins, sample %d is %g"%(sample,Phi50)
-
-        Phi[0] = etest[0].ETestKnowingD ( hSmpl[0] )
+        Phi = etest.ETestKnowingD ( hSmpl )
         print "ETest statistic for N=50 bins, sample %d is %g"%(sample,Phi)
-
         TEtest.Fill()
-
-        del hSmpl[:]
+        del hSmpl
 
 print "done filling %d events " % TEtest.GetEntries() + "in " + TEtest.GetTitle()
 
