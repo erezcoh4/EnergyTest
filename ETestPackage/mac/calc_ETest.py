@@ -9,8 +9,8 @@ rand    = TRandom3()
 DoUniformUniform    = True
 
 
-Nbins = 50
-Nsamples = 20
+Nbins = 40
+Nsamples = 40
 
 FileName    = "ETestResults_Nbins_%d"%Nbins
 Path    = "/home/erez/EnergyTest/ETestResults"
