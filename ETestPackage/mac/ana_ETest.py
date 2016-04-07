@@ -29,7 +29,7 @@ ana     = TPlots(Path+"/"+FileName+".root" ,"ETestTree")
 
 if DoUniFlat:
     canvas = ana.CreateCanvas("uniform vs constant comparison" )
-    h = ana.H1("phiFlatUni" , ROOT.TCut() , "HIST" , Nbins , 0 , 5e-5
+    h = ana.H1("phiFlatUni" , ROOT.TCut() , "HIST" , Nbins , 0 , 1e-3
               , "ETest statistic uniform vs. constant at %dx%dx%d binning"%(N,N,N),"#phi")
     integral = h.Integral()
     CL95     = 0

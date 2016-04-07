@@ -4,20 +4,22 @@ from ROOT import TFile , TTree
 from array import array
 import numpy as n
 
-# run with
-# python mac/calc_ETest <Nbins> <Nsamples> <number>
-rand    = TRandom3(int(sys.argv[3]))
+# run with:
+# > python mac/calc_ETest <Nbins> <Nsamples> <number>
+Nbins       = int(sys.argv[1])
+Nsamples    = int(sys.argv[2])
+FileNumber  = int(sys.argv[3])
+rand        = TRandom3(int(sys.argv[3]))
+
+
 
 DoUniformUniform    = True
 
 
-Nbins = int(sys.argv[1])
-Nsamples = int(sys.argv[2])
 
 FileName    = "ETestResults_Nbins_%d"%Nbins
 Path    = "/home/erez/EnergyTest/ETestResults"
 #Path    = "/Users/erezcohen/Desktop/EnergyTest/ETestResults"
-FileNumber  = int(sys.argv[3])
 FEtest  = ROOT.TFile(Path+"/"+FileName+"_%d.root"%FileNumber,"recreate");
 TEtest  = ROOT.TTree("ETestTree","ETest statistic");
 fNbins  = n.zeros(1, dtype=int)
@@ -40,7 +42,7 @@ if DoUniformUniform:
             for i3 in range(1,Nbins) :
                 hFlat.SetBinContent(i1,i2,i3,bin_content);
 
-    etest.SetD(hFlat)
+#    etest.SetD(hFlat)
 
     for sample in range(0,Nsamples) :
         print "Sample %d" %(sample)
@@ -54,7 +56,8 @@ if DoUniformUniform:
             z = rand.Uniform()
             hSmpl.Fill(x,y,z)
 
-        Phi[0] = etest.ETestKnowingD ( hSmpl )
+        Phi[0] = etest.Histo3DETest( hFlat , hSmpl )
+#        Phi[0] = etest.ETestKnowingD ( hSmpl )
         if(sample%10==0):
             print "ETest statistic for N=%d bins, sample %d is %g"%(Nbins,sample,Phi)
         TEtest.Fill()
