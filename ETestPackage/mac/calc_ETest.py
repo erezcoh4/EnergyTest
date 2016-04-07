@@ -21,8 +21,8 @@ DoUniformConst          = False
 DoUniUni                = True
 DoUniUniContamination   = False
 
-#Path    = "/home/erez/EnergyTest/ETestResults"
-Path    = "/Users/erezcohen/Desktop/EnergyTest/EnergyTestResults"
+Path    = "/home/erez/EnergyTest/ETestResults"
+#Path    = "/Users/erezcohen/Desktop/EnergyTest/EnergyTestResults"
 
 
 if DoUniformConst:
