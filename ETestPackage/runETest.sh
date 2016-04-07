@@ -1,5 +1,4 @@
-<<<<<<< HEAD
-Nsamples=40
+Nsamples=50
 echo "Nbins = $1, Nsamples=$Nsamples"
 for i in {1..60}
 do
