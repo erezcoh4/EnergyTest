@@ -18,7 +18,8 @@ rand        = TRandom3(int(sys.argv[3]))
 
 
 DoUniformConst          = False
-DoUniUniContamination   = True
+DoUniUni                = True
+DoUniUniContamination   = False
 
 #Path    = "/home/erez/EnergyTest/ETestResults"
 Path    = "/Users/erezcohen/Desktop/EnergyTest/EnergyTestResults"
@@ -26,6 +27,8 @@ Path    = "/Users/erezcohen/Desktop/EnergyTest/EnergyTestResults"
 
 if DoUniformConst:
     FileName    = "ETestResults_Nbins_%d"%Nbins
+elif DoUniUni:
+    FileName    = "UniUni_Nbins_%d"%(Nbins)
 elif DoUniUniContamination:
     nContamination = 0.1    # [%] of contammination
     FileName    = "UniGaus%.2fpercentCont_Nbins_%d"%(nContamination,Nbins)
@@ -35,7 +38,7 @@ TEtest  = ROOT.TTree("ETestTree","ETest statistic "+FileName);
 fNbins  = n.zeros(1, dtype=int)
 Phi     = n.zeros(1, dtype=float)
 TEtest.Branch( "Nbins"      , fNbins, "Nbins/I" )
-TEtest.Branch( "phiFlatUni" , Phi   , "phiFlatUni/D" )
+TEtest.Branch( "phi"        , Phi   , "phi/D" )
 fNbins[0] = Nbins
 etest   = ETest(Nbins)
 
@@ -57,6 +60,22 @@ if DoUniformConst:
         Phi[0] = etest.Histo3DETest( hFlat , hSmpl ) #        Phi[0] = etest.ETestKnowingD ( hSmpl )
         if(sample%10==0):
             print "Sample %d" %(sample) +"ETest statistic for N=%d bins, sample %d is %g"%(Nbins,sample,Phi)
+        TEtest.Fill()
+        del hSmpl
+
+
+if DoUniUni:
+    Npoints = 135000
+    hUni = ROOT.TH3F("hUni_%d"%(Nbins),"uniform distribution Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
+    for i in range(0,Npoints) :
+        hUni.Fill(rand.Uniform(),rand.Uniform(),rand.Uniform())
+    for sample in range(0,Nsamples) :
+        hSmpl = ROOT.TH3F("hSmpl_%d_%d"%(sample,Nbins),"Uniform sample Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
+        for j in range(0,Npoints) :
+            hSmpl.Fill(rand.Uniform(),rand.Uniform(),rand.Uniform())
+        Phi[0] = etest.Histo3DETest( hUni , hSmpl )
+        if(sample%10==0):
+            print "Sample %d" %(sample) +" ETest statistic for N=%d bins, sample %d is %g"%(Nbins,sample,Phi)
         TEtest.Fill()
         del hSmpl
 

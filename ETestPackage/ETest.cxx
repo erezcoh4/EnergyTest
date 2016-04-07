@@ -126,7 +126,7 @@ double ETest::Histo3DETest(const TH3* hD, const TH3* hMC){
 
 
 
-TString   ETest::ETestPower (TH1F * hPhi , float CL95){
+TString  ETest::ETestPower (TH1F * hPhi , float CL95){
     float power = 1 - (hPhi->Integral( 0 , hPhi->GetXaxis()->FindBin(CL95))/ hPhi->Integral());
     TString res = Form("ETest power = %.3f",power);
     std::cout << res << std::endl;

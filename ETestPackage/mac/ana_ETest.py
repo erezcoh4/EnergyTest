@@ -1,16 +1,15 @@
 # run:
 # > python mac/ana_ppp.py <target A>
 
-import ROOT
-import os, sys
-from ROOT import TPlots
+import ROOT , os, sys
+from ROOT import TPlots , ETest
 from rootpy.interactive import wait
 ROOT.gStyle.SetOptStat(0000)
 
 
 
-DoUniFlat   = True
-
+DoUniFlat               = False
+DoUniUniContamination   = True
 Nbins   = 100
 
 Path    = "/Users/erezcohen/Desktop/EnergyTest/EnergyTestResults"
@@ -19,9 +18,14 @@ if len(sys.argv)>1:
     N = int(sys.argv[1])
 else:
     print "operate using python ana_ETest.py <ETest Nbins = 30>"
-    N = 30
+    sys.exit(0)
 
-FileName= "ETest%d"%N
+if DoUniFlat:
+    FileName = "ETest%d"%N
+elif DoUniUniContamination:
+    nContamination = 0.1    # [%] of contammination
+    FileName    = "UniUni%.2fCont_%d"%(nContamination,N)
+
 ana     = TPlots(Path+"/"+FileName+".root" ,"ETestTree")
 
 
@@ -43,4 +47,19 @@ if DoUniFlat:
     wait()
     canvas.SaveAs("~/Desktop/ETestUniFlat_%d_bins.pdf"%N)
 
+
+if DoUniUniContamination:
+#    CL95    = (["10x10x10",1.675e-06],["20x20x20",1.975e-06],["30x30x30",2.175e-06],["40x40x40",3.675e-06],["50x50x50",3.475e-06])
+    CL95list = {10:1.675e-06, 20:1.975e-06, 30:2.175e-06 ,40:3.675e-06 , 50:3.475e-06}
+    for key,val in CL95list.items():
+        if key == N:
+            CL95 = val
+    print "CL95 = %g"%CL95
+    etest   = ETest(N)
+    canvas  = ana.CreateCanvas("uni./uni. + contamination" )
+    hPhi    = ana.H1("phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 1e-6 , "uni./uni. + %.2f%% contamination at %d binning"%(nContamination,N),"#phi")
+    ana.Text(CL95 , hPhi.GetMaximum() , etest.ETestPower (hPhi , CL95) )
+    canvas.Update()
+    wait()
+    canvas.SaveAs("~/Desktop/UniUni%.2fCont_%d.pdf"%(N,nContamination))
 
