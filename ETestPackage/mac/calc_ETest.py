@@ -20,8 +20,8 @@ rand        = TRandom3(int(sys.argv[3]))
 DoUniformConst          = False
 DoUniUniContamination   = True
 
-#Path    = "/home/erez/EnergyTest/ETestResults"
-Path    = "/Users/erezcohen/Desktop/EnergyTest/EnergyTestResults"
+Path    = "/home/erez/EnergyTest/ETestResults"
+#Path    = "/Users/erezcohen/Desktop/EnergyTest/EnergyTestResults"
 
 
 if DoUniformConst:
@@ -35,7 +35,7 @@ TEtest  = ROOT.TTree("ETestTree","ETest statistic "+FileName);
 fNbins  = n.zeros(1, dtype=int)
 Phi     = n.zeros(1, dtype=float)
 TEtest.Branch( "Nbins"      , fNbins, "Nbins/I" )
-TEtest.Branch( "phiFlatUni" , Phi   , "phiFlatUni/D" )
+TEtest.Branch( "phi"        , Phi   , "phi/D" )
 fNbins[0] = Nbins
 etest   = ETest(Nbins)
 
