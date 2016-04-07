@@ -22,6 +22,8 @@ else:
 
 if DoUniFlat:
     FileName = "ETest%d"%N
+elif DoUniUni:
+    FileName    = "UniUni_Nbins_%d"%(N)
 elif DoUniUniContamination:
     nContamination = 0.1    # [%] of contammination
     FileName    = "UniUni%.2fCont_%d"%(nContamination,N)
@@ -46,6 +48,23 @@ if DoUniFlat:
     canvas.Update()
     wait()
     canvas.SaveAs("~/Desktop/ETestUniFlat_%d_bins.pdf"%N)
+
+
+
+if DoUniUni:
+    canvas = ana.CreateCanvas("uniform vs constant comparison" )
+    h = ana.H1("phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 5e-6 , "ETest statistic uniform/uniform, %dx%dx%d binning"%(N,N,N),"#phi")
+    integral = h.Integral()
+    CL95     = 0
+    for bin in range (1,Nbins):
+        if (h.Integral(1,bin) > 0.95*integral):
+            CL95 = h.GetXaxis().GetBinCenter(bin)
+            break
+    ana.Line(CL95 , 0 , CL95 , h.GetMaximum()  , 2 , 2)
+    ana.Text(CL95 , h.GetMaximum() , "CL_{95} = %g"%CL95 )
+    canvas.Update()
+    wait()
+    canvas.SaveAs("~/Desktop/ETestUniUni_%d_bins.pdf"%N)
 
 
 if DoUniUniContamination:
