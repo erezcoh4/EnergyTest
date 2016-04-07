@@ -4,19 +4,20 @@ from ROOT import TFile , TTree
 from array import array
 import numpy as n
 
-r       = TRandom3()
-rand    = TRandom3(int(r.Uniform(10000)))
+# run with
+# python mac/calc_ETest <Nbins> <Nsamples> <number>
+rand    = TRandom3(int(sys.argv[3]))
 
 DoUniformUniform    = True
 
 
-Nbins = 40
-Nsamples = 2
+Nbins = int(sys.argv[1])
+Nsamples = int(sys.argv[2])
 
 FileName    = "ETestResults_Nbins_%d"%Nbins
 Path    = "/home/erez/EnergyTest/ETestResults"
 #Path    = "/Users/erezcohen/Desktop/EnergyTest/ETestResults"
-FileNumber  = int(sys.argv[1])
+FileNumber  = int(sys.argv[3])
 FEtest  = ROOT.TFile(Path+"/"+FileName+"_%d.root"%FileNumber,"recreate");
 TEtest  = ROOT.TTree("ETestTree","ETest statistic");
 fNbins  = n.zeros(1, dtype=int)

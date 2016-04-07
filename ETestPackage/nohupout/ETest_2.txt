@@ -1,0 +1,3 @@
+Sample 0
+ETest statistic for N=10 bins, sample 0 is 0.0114422
+done filling 1 events in ETest statistic
