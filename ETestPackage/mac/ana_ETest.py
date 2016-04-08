@@ -8,8 +8,9 @@ ROOT.gStyle.SetOptStat(0000)
 
 
 
-DoUniFlat               = False
-DoUniUniContamination   = True
+DoUniFlat               = True
+DoUniUni                = False
+DoUniUniContamination   = False
 Nbins   = 100
 
 Path    = "/Users/erezcohen/Desktop/EnergyTest/EnergyTestResults"
@@ -23,7 +24,7 @@ else:
 if DoUniFlat:
     FileName = "ETest%d"%N
 elif DoUniUni:
-    FileName    = "UniUni_Nbins_%d"%(N)
+    FileName    = "UniUni%d"%(N)
 elif DoUniUniContamination:
     nContamination = 0.1    # [%] of contammination
     FileName    = "UniUni%.2fCont_%d"%(nContamination,N)
@@ -53,7 +54,7 @@ if DoUniFlat:
 
 if DoUniUni:
     canvas = ana.CreateCanvas("uniform vs constant comparison" )
-    h = ana.H1("phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 5e-6 , "ETest statistic uniform/uniform, %dx%dx%d binning"%(N,N,N),"#phi")
+    h = ana.H1("1e6*phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 0.1 , "ETest statistic uniform/uniform, %dx%dx%d binning"%(N,N,N),"#phi [x 10^{-6}]")
     integral = h.Integral()
     CL95     = 0
     for bin in range (1,Nbins):
@@ -61,24 +62,27 @@ if DoUniUni:
             CL95 = h.GetXaxis().GetBinCenter(bin)
             break
     ana.Line(CL95 , 0 , CL95 , h.GetMaximum()  , 2 , 2)
-    ana.Text(CL95 , h.GetMaximum() , "CL_{95} = %g"%CL95 )
+    ana.Text(CL95 , h.GetMaximum() , "CL_{95} = %g x 10^{-6}"%CL95 )
     canvas.Update()
     wait()
     canvas.SaveAs("~/Desktop/ETestUniUni_%d_bins.pdf"%N)
 
 
 if DoUniUniContamination:
-#    CL95    = (["10x10x10",1.675e-06],["20x20x20",1.975e-06],["30x30x30",2.175e-06],["40x40x40",3.675e-06],["50x50x50",3.475e-06])
-    CL95list = {10:1.675e-06, 20:1.975e-06, 30:2.175e-06 ,40:3.675e-06 , 50:3.475e-06}
+#    # 95% confidence levels for uniform/uniform comparisons [x 10^{-6}] (Nbins:CL95)
+#    CL95list = {10:0.0755 , 20:0.0795, 30:0.0815 ,40:0.0815 , 50:0.0835}
+    # 95% confidence levels for uniform/constant comparisons [x 10^{-6}] (Nbins:CL95)
+    CL95list = {10:1.675 , 20:1.975, 30:2.175 ,40:3.675 , 50:3.475}
     for key,val in CL95list.items():
         if key == N:
             CL95 = val
     print "CL95 = %g"%CL95
     etest   = ETest(N)
     canvas  = ana.CreateCanvas("uni./uni. + contamination" )
-    hPhi    = ana.H1("phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 1e-6 , "uni./uni. + %.2f%% contamination at %d binning"%(nContamination,N),"#phi")
+    hPhi    = ana.H1("1e6*phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 6. , "uni./uni. + %.2f%% contamination at %d binning"%(nContamination,N),"#phi [x 10^{-6}]")
+    ana.Line(CL95 , 0 , CL95 , hPhi.GetMaximum()  , 2 , 2)
     ana.Text(CL95 , hPhi.GetMaximum() , etest.ETestPower (hPhi , CL95) )
     canvas.Update()
     wait()
-    canvas.SaveAs("~/Desktop/UniUni%.2fCont_%d.pdf"%(N,nContamination))
+    canvas.SaveAs("~/Desktop/UniUni%.2fCont_%d.pdf"%(nContamination,N))
 
