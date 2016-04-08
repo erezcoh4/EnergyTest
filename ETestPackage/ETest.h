@@ -55,7 +55,10 @@ public:
     double          SetD (const TH3* hD);
     double ETestKnowingD (const TH3* hMC);
     TString   ETestPower (TH1F * hPhi , float CL95);
+
     
+    void    SetCutOffPar (float fCOPar = 0.66170) {d000 = fCOPar*step;};
+
 };
 
 #endif
