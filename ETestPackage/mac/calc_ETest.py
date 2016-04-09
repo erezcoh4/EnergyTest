@@ -86,7 +86,7 @@ if DoUniUni:
 
 if DoUniUniCutOffParameter:
     etest.SetCutOffPar(CutOffParameter)
-    Npoints = 135000
+    Npoints = 1000000
     hUni = ROOT.TH3F("hUni_%d"%(Nbins),"uniform distribution Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
     for i in range(0,Npoints) :
         hUni.Fill(rand.Rndm(),rand.Rndm(),rand.Rndm())
