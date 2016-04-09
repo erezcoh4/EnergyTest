@@ -28,7 +28,7 @@ elif DoUniUni:
     FileName    = "UniUni%d"%(N)
 elif DoUniUniCutOffParameter:
     CutOffParameter = float(sys.argv[2])
-    FileName    = "UniUni%d_Cutoff_%.4f"%(N,CutOffParameter)
+    FileName    = "UniUni%d_Cutoff_%.1f"%(N,CutOffParameter)
 elif DoUniUniContamination:
     nContamination = 0.1    # [%] of contammination
     FileName    = "UniUni%.2fCont_%d"%(nContamination,N)
@@ -75,7 +75,7 @@ if DoUniUni:
 
 if DoUniUniCutOffParameter:
     canvas = ana.CreateCanvas("uniform vs uniform comparison" )
-    h = ana.H1("1e6*phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 60 , "ETest uni/uni, %dx%dx%d binning, cutoff = %.4f"%(N,N,N,CutOffParameter),"#phi [x 10^{-6}]")
+    h = ana.H1("1e6*phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 10 , "ETest uni/uni, %dx%dx%d binning, cutoff = %.4f"%(N,N,N,CutOffParameter),"#phi [x 10^{6}]")
     integral = h.Integral()
     CL95     = 0
     for bin in range (1,Nbins):
