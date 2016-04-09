@@ -28,7 +28,7 @@ ETest::~ETest(){}
 
 
 double ETest::Histo3DETest(const TH3* hD, const TH3* hMC){
-    
+    nD = nMC = 0;
     // Initilization
     for (int i1 = Low; i1 < High; i1++){    // move to arrays instead of histogram to reduce expensive GetBinContent() calculation time
         for (int i2 = Low; i2 < High; i2++) {

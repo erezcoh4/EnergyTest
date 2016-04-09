@@ -89,11 +89,11 @@ if DoUniUniCutOffParameter:
     Npoints = 135000
     hUni = ROOT.TH3F("hUni_%d"%(Nbins),"uniform distribution Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
     for i in range(0,Npoints) :
-        hUni.Fill(rand.Uniform(),rand.Uniform(),rand.Uniform())
+        hUni.Fill(rand.Rndm(),rand.Rndm(),rand.Rndm())
     for sample in range(0,Nsamples) :
         hSmpl = ROOT.TH3F("hSmpl_%d_%d"%(sample,Nbins),"Uniform sample Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
         for j in range(0,Npoints) :
-            hSmpl.Fill(rand.Uniform(),rand.Uniform(),rand.Uniform())
+            hSmpl.Fill(rand.Rndm(),rand.Rndm(),rand.Rndm())
         Phi[0] = etest.Histo3DETest( hUni , hSmpl )
         if(sample%10==0):
             print "Sample %d" %(sample) +" ETest statistic for N=%d bins, sample %d is %g"%(Nbins,sample,Phi)
