@@ -94,4 +94,24 @@ TString  ETest::ETestPower (TH1F * hPhi , float CL95){
 }
 
 
+
+TGraphErrors * ETest::cutoff_graph(){
+    const int        N  = 10;
+    double CutoffPar[N] = {0.1   , 0.2   , 0.3   , 0.4   , 0.5   , 0.6   , 0.7   , 0.8   , 0.9   , 1.0   };
+    double  COParErr[N] = {0.01  , 0.01  , 0.01  , 0.01  , 0.01  , 0.01  , 0.01  , 0.01  , 0.01  , 0.01  };
+    // discrimination power for Uniform / Unifrom with Gaussian contamination of 0.1% trivariate (0.5,0.1) gaussian
+    double      CL95[N] = {6.25  , 5.55  , 5.15  , 4.85  , 4.65  , 4.45  , 4.35  , 4.15  , 4.05  , 3.95 }; // x 10^{-6}
+    double     Power[N] = {0.13  , 0.132  , 0.129  , 0.132  , 0.124  , 0.129  , 0.115  , 0.132  , 0.129  , 0.127 };
+    double  PowerErr[N] = {0.01 , 0.01 , 0.01 , 0.01 , 0.01 , 0.01 , 0.01 , 0.01 , 0.01 , 0.01 };
+//    TCanvas * c = new TCanvas("cutoff","cutoff");
+    TGraphErrors * g = new TGraphErrors( N, CutoffPar, Power, COParErr, PowerErr );
+    g -> SetTitle("ETest discrimination power as a function of <r>");
+    g -> GetXaxis() -> SetTitle("cutoff parameter <r>");
+    g -> GetYaxis() -> SetTitle("Discrimination Power");
+    g -> GetYaxis() -> SetRangeUser(0.05,0.2);
+    return g;
+//    c -> SaveAs("~/Desktop/CutoffParameter.pdf");
+}
+
+
 #endif

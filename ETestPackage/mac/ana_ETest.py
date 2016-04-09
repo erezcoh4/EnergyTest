@@ -12,7 +12,8 @@ DoUniFlat               = False
 DoUniUni                = False
 DoUniUniCutOffParameter = False
 DoUniUniContamination   = False
-DoUniUniContCutoffPar   = True
+DoUniUniContCutoffPar   = False
+DoUniUniContCOPgraph    = True
 
 Nbins   = 100
 
@@ -40,7 +41,10 @@ elif DoUniUniContCutoffPar:
     nContamination = 0.1    # [%] of contammination
     FileName    = "Uni_Cutoff%.1f_Gaus%.1fCont"%(CutOffParameter,nContamination) # only for N=30
 
-ana     = TPlots(Path+"/"+FileName+".root" ,"ETestTree")
+if DoUniUniContCOPgraph==False :
+    ana     = TPlots(Path+"/"+FileName+".root" ,"ETestTree")
+
+plot = TPlots()
 
 
 
@@ -131,3 +135,14 @@ if DoUniUniContCutoffPar:
     canvas.Update()
     wait()
     canvas.SaveAs("~/Desktop/"+FileName+".pdf")
+
+
+if DoUniUniContCOPgraph:
+    etest   = ETest(30)
+    canvas  = plot.CreateCanvas("uni./uni. + contamination at different cutoffs" )
+    g = etest.cutoff_graph()
+    g.Draw("apc")
+    canvas.Update()
+    wait()
+    canvas.SaveAs("~/Desktop/CutoffParameter.pdf")
+

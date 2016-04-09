@@ -48,6 +48,7 @@ extern G__linked_taginfo G__EnergyTest_ETestPackageDictLN_TVectorTlEfloatgR;
 extern G__linked_taginfo G__EnergyTest_ETestPackageDictLN_TVectorTlEdoublegR;
 extern G__linked_taginfo G__EnergyTest_ETestPackageDictLN_TH1F;
 extern G__linked_taginfo G__EnergyTest_ETestPackageDictLN_TH3;
+extern G__linked_taginfo G__EnergyTest_ETestPackageDictLN_TGraphErrors;
 extern G__linked_taginfo G__EnergyTest_ETestPackageDictLN_ETest;
 
 /* STUB derived class for protected member access */

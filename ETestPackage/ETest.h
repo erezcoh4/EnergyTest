@@ -24,6 +24,7 @@
 #include "TError.h"
 #include <cmath>
 #include <iostream>
+#include "TGraphErrors.h"
 //#include "MySoftwarePackage/TPlots.h"
 #define MAX 50
 /**
@@ -55,7 +56,8 @@ public:
 
     
     void    SetCutOffPar (float fCOPar = 0.66170) {Printf("cutoffparameter = %.4f",fCOPar); d000 = log(fCOPar*step);};
-
+    TGraphErrors * cutoff_graph();
+    
 };
 
 #endif
