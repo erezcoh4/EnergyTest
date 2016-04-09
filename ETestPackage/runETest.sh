@@ -1,3 +1,5 @@
+# operate using
+# > ./runETest <Nbins> <cutoff parameter>
 Nsamples=50
 echo "Nbins = $1, cutoff parameter = $2, Nsamples=$Nsamples"
 for i in {1..60}
