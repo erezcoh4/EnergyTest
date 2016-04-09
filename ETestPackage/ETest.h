@@ -39,7 +39,6 @@ public:
     int N;
     int     Low  , High   ;
     double phiD  , phiMC    , phiDMC    , step , stepsq    , d000  , nD    , nMC;
-//    double *** D , *** MC   , *** psi;
     double D[MAX][MAX][MAX] , MC[MAX][MAX][MAX]   , psi[MAX][MAX][MAX];
     double Dpart,  MCpart, DMCpart;
 
@@ -52,12 +51,10 @@ public:
     
     
     double  Histo3DETest (const TH3*, const TH3*);
-    double          SetD (const TH3* hD);
-    double ETestKnowingD (const TH3* hMC);
     TString   ETestPower (TH1F * hPhi , float CL95);
 
     
-    void    SetCutOffPar (float fCOPar = 0.66170) {d000 = fCOPar*step;};
+    void    SetCutOffPar (float fCOPar = 0.66170) {Printf("cutoffparameter = %.4f",fCOPar); d000 = log(fCOPar*step);};
 
 };
 

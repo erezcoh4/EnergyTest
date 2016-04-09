@@ -8,8 +8,9 @@ ROOT.gStyle.SetOptStat(0000)
 
 
 
-DoUniFlat               = True
+DoUniFlat               = False
 DoUniUni                = False
+DoUniUniCutOffParameter = True
 DoUniUniContamination   = False
 Nbins   = 100
 
@@ -18,13 +19,16 @@ Path    = "/Users/erezcohen/Desktop/EnergyTest/EnergyTestResults"
 if len(sys.argv)>1:
     N = int(sys.argv[1])
 else:
-    print "operate using python ana_ETest.py <ETest Nbins = 30>"
+    print "operate using python ana_ETest.py <ETest Nbins = 30> <Cutoff parameter = 0.6617>"
     sys.exit(0)
 
 if DoUniFlat:
     FileName = "ETest%d"%N
 elif DoUniUni:
     FileName    = "UniUni%d"%(N)
+elif DoUniUniCutOffParameter:
+    CutOffParameter = float(sys.argv[2])
+    FileName    = "UniUni%d_Cutoff_%.4f"%(N,CutOffParameter)
 elif DoUniUniContamination:
     nContamination = 0.1    # [%] of contammination
     FileName    = "UniUni%.2fCont_%d"%(nContamination,N)
@@ -66,6 +70,23 @@ if DoUniUni:
     canvas.Update()
     wait()
     canvas.SaveAs("~/Desktop/ETestUniUni_%d_bins.pdf"%N)
+
+
+
+if DoUniUniCutOffParameter:
+    canvas = ana.CreateCanvas("uniform vs uniform comparison" )
+    h = ana.H1("1e6*phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 0.01 , "ETest uni/uni, %dx%dx%d binning, cutoff = %.4f"%(N,N,N,CutOffParameter),"#phi [x 10^{-6}]")
+    integral = h.Integral()
+    CL95     = 0
+    for bin in range (1,Nbins):
+        if (h.Integral(1,bin) > 0.95*integral):
+            CL95 = h.GetXaxis().GetBinCenter(bin)
+            break
+    ana.Line(CL95 , 0 , CL95 , h.GetMaximum()  , 2 , 2)
+    ana.Text(CL95 , h.GetMaximum() , "CL_{95} = %g x 10^{-6}"%CL95 )
+    canvas.Update()
+    wait()
+    canvas.SaveAs("~/Desktop/ETest"+FileName+".pdf")
 
 
 if DoUniUniContamination:

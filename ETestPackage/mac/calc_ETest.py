@@ -8,7 +8,7 @@ import numpy as n
 # > python mac/calc_ETest <Nbins> <Nsamples> <number> <cutoff parameter = 0.66170>
 
 if int(len(sys.argv)) < 2 :
-    print "run with: \n > python mac/calc_ETest <Nbins> <Nsamples> <number> <cutoff parameter = 0.66170>"
+    print "run with: \n > python mac/calc_ETest <Nbins> <Nsamples> <number> <cutoff parameter = 0.6617>"
     sys.exit(0)
 
 Nbins       = int(sys.argv[1])
