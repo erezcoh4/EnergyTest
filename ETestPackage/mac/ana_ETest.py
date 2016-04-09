@@ -11,9 +11,9 @@ ROOT.gStyle.SetOptStat(0000)
 DoUniFlat               = False
 DoUniUni                = False
 DoUniUniCutOffParameter = False
-DoUniUniContamination   = False
+DoUniUniContamination   = True
 DoUniUniContCutoffPar   = False
-DoUniUniContCOPgraph    = True
+DoUniUniContCOPgraph    = False
 
 Nbins   = 100
 
@@ -27,14 +27,22 @@ else:
 
 if DoUniFlat:
     FileName = "ETest%d"%N
+
 elif DoUniUni:
+    Path = Path + "/" + "DifferentBinning"
     FileName    = "UniUni%d"%(N)
+
 elif DoUniUniCutOffParameter:
     CutOffParameter = float(sys.argv[2])
     FileName    = "UniUni%d_Cutoff_%.1f"%(N,CutOffParameter)
+
 elif DoUniUniContamination:
+    Path = Path + "/" + "DifferentBinning"
+    CutOffParameter = 0.6617
     nContamination = 0.1    # [%] of contammination
-    FileName    = "UniUni%.2fCont_%d"%(nContamination,N)
+    FileName = "UniGaus%.1fCont_Nbins%d"%(nContamination,N)
+
+
 elif DoUniUniContCutoffPar:
     Path        = Path+"/"+"DifferentCutoff"
     CutOffParameter = float(sys.argv[2])
@@ -109,7 +117,7 @@ if DoUniUniContamination:
     print "CL95 = %g"%CL95
     etest   = ETest(N)
     canvas  = ana.CreateCanvas("uni./uni. + contamination" )
-    hPhi    = ana.H1("1e6*phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 6. , "uni./uni. + %.2f%% contamination at %d binning"%(nContamination,N),"#phi [x 10^{-6}]")
+    hPhi    = ana.H1("1e6*phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 8. , "uni./uni. + %.2f%% contamination at %d binning"%(nContamination,N),"#phi x 10^{6}")
     ana.Line(CL95 , 0 , CL95 , hPhi.GetMaximum()  , 2 , 2)
     ana.Text(CL95 , hPhi.GetMaximum() , etest.ETestPower (hPhi , CL95) )
     canvas.Update()
