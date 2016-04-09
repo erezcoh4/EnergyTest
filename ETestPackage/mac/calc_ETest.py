@@ -40,7 +40,7 @@ elif DoUniUniContamination:
 elif DoUniUniContCutoffPar:
     CutOffParameter = float(sys.argv[4])
     nContamination = 0.1    # [%] of contammination
-    FileName    = "Uni_Cutoff%.2f_Gaus%.2fCont_Nbins_%d"%(nContamination,Nbins)
+    FileName    = "Uni_Cutoff%.2f_Gaus%.2fCont_Nbins_%d"%(CutOffParameter,nContamination,Nbins)
 
 FEtest  = ROOT.TFile(Path+"/"+FileName+"_%d.root"%FileNumber,"recreate");
 TEtest  = ROOT.TTree("ETestTree","ETest statistic "+FileName);
