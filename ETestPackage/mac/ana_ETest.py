@@ -1,5 +1,5 @@
 # run:
-# > python mac/ana_ppp.py <target A>
+# > python ana_ETest.py <ETest Nbins = 30> <Cutoff parameter = 0.6617>
 
 import ROOT , os, sys
 from ROOT import TPlots , ETest
@@ -10,8 +10,10 @@ ROOT.gStyle.SetOptStat(0000)
 
 DoUniFlat               = False
 DoUniUni                = False
-DoUniUniCutOffParameter = True
-DoUniUniContamination   = False
+DoUniUniCutOffParameter = False
+DoUniUniContamination   = True
+DoUniUniContCutoffPar   = False
+
 Nbins   = 100
 
 Path    = "/Users/erezcohen/Desktop/EnergyTest/EnergyTestResults"
@@ -19,7 +21,7 @@ Path    = "/Users/erezcohen/Desktop/EnergyTest/EnergyTestResults"
 if len(sys.argv)>1:
     N = int(sys.argv[1])
 else:
-    print "operate using python ana_ETest.py <ETest Nbins = 30> <Cutoff parameter = 0.6617>"
+    print "run: \n > python ana_ETest.py <ETest Nbins = 30> <Cutoff parameter = 0.6617>"
     sys.exit(0)
 
 if DoUniFlat:
@@ -32,6 +34,10 @@ elif DoUniUniCutOffParameter:
 elif DoUniUniContamination:
     nContamination = 0.1    # [%] of contammination
     FileName    = "UniUni%.2fCont_%d"%(nContamination,N)
+elif DoUniUniContCutoffPar:
+    CutOffParameter = float(sys.argv[4])
+    nContamination = 0.1    # [%] of contammination
+    FileName    = "Uni_Cutoff%.2f_Gaus%.2fCont_Nbins_%d"%(CutOffParameter,nContamination,Nbins)
 
 ana     = TPlots(Path+"/"+FileName+".root" ,"ETestTree")
 
@@ -55,10 +61,9 @@ if DoUniFlat:
     canvas.SaveAs("~/Desktop/ETestUniFlat_%d_bins.pdf"%N)
 
 
-
 if DoUniUni:
     canvas = ana.CreateCanvas("uniform vs constant comparison" )
-    h = ana.H1("1e6*phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 0.1 , "ETest statistic uniform/uniform, %dx%dx%d binning"%(N,N,N),"#phi [x 10^{-6}]")
+    h = ana.H1("1e6*phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 10 , "ETest statistic uniform/uniform, %dx%dx%d binning"%(N,N,N),"#phi x 10^{6}")
     integral = h.Integral()
     CL95     = 0
     for bin in range (1,Nbins):
@@ -70,7 +75,6 @@ if DoUniUni:
     canvas.Update()
     wait()
     canvas.SaveAs("~/Desktop/ETestUniUni_%d_bins.pdf"%N)
-
 
 
 if DoUniUniCutOffParameter:
@@ -91,9 +95,9 @@ if DoUniUniCutOffParameter:
 
 if DoUniUniContamination:
 #    # 95% confidence levels for uniform/uniform comparisons [x 10^{-6}] (Nbins:CL95)
-#    CL95list = {10:0.0755 , 20:0.0795, 30:0.0815 ,40:0.0815 , 50:0.0835}
+CL95list = {10:3.35 , 20:4.05 , 30:4.10 ,40:4.65 , 50:1} # 50 still missing.... also have 70....
     # 95% confidence levels for uniform/constant comparisons [x 10^{-6}] (Nbins:CL95)
-    CL95list = {10:1.675 , 20:1.975, 30:2.175 ,40:3.675 , 50:3.475}
+#    CL95list = {10:1.675 , 20:1.975, 30:2.175 ,40:3.675 , 50:3.475}
     for key,val in CL95list.items():
         if key == N:
             CL95 = val

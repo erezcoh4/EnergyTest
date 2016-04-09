@@ -16,31 +16,33 @@ Nsamples    = int(sys.argv[2])
 FileNumber  = int(sys.argv[3])
 rand        = TRandom3(int(sys.argv[3]))
 
+CalculationType = "Uni vs. Uni + 0.1% Gauss contamination"
 
-DoUniformConst          = False
-DoUniUni                = False
-DoUniUniCutOffParameter = False
-DoUniUniContamination   = False
-DoUniUniContCutoffPar   = True
 
 Path    = "/home/erez/EnergyTest/ETestResults"
 #Path    = "/Users/erezcohen/Desktop/EnergyTest/EnergyTestResults"
 
 
-if DoUniformConst:
+if (CalculationType == "Uni vs. Const"):
     FileName    = "ETestResults_Nbins_%d"%Nbins
-elif DoUniUni:
+
+elif (CalculationType == "Uni vs. Uni"):
     FileName    = "UniUni_Nbins_%d"%(Nbins)
-elif DoUniUniCutOffParameter:
+
+elif (CalculationType == "Uni vs. Uni with different cutoffs"):
     CutOffParameter = float(sys.argv[4])
     FileName    = "UniUni%d_Cutoff%.2f"%(Nbins,CutOffParameter)
-elif DoUniUniContamination:
+
+elif (CalculationType == "Uni vs. Uni + 0.1% Gauss contamination"):
     nContamination = 0.1    # [%] of contammination
     FileName    = "UniGaus%.2fpercentCont_Nbins_%d"%(nContamination,Nbins)
-elif DoUniUniContCutoffPar:
+
+elif (CalculationType == "Uni vs. Uni + 0.1% Gauss contamination with different cutoffs"):
     CutOffParameter = float(sys.argv[4])
     nContamination = 0.1    # [%] of contammination
     FileName    = "Uni_Cutoff%.2f_Gaus%.2fCont_Nbins_%d"%(CutOffParameter,nContamination,Nbins)
+
+
 
 FEtest  = ROOT.TFile(Path+"/"+FileName+"_%d.root"%FileNumber,"recreate");
 TEtest  = ROOT.TTree("ETestTree","ETest statistic "+FileName);
@@ -54,7 +56,7 @@ etest   = ETest(Nbins)
 
 
 
-if DoUniformConst:
+if (CalculationType == "Uni vs. Const"):
     Npoints = 135000
     hFlat = ROOT.TH3F("hFlat_%d"%(Nbins),"Flat Distribution Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
     bin_content = Npoints/(Nbins*Nbins*Nbins)
@@ -73,7 +75,7 @@ if DoUniformConst:
         del hSmpl
 
 
-if DoUniUni:
+elif (CalculationType == "Uni vs. Uni"):
     Npoints = 1000000
     hUni = ROOT.TH3F("hUni_%d"%(Nbins),"uniform distribution Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
     for i in range(0,Npoints) :
@@ -89,7 +91,7 @@ if DoUniUni:
         del hSmpl
 
 
-if DoUniUniCutOffParameter:
+elif (CalculationType == "Uni vs. Uni with different cutoffs"):
     etest.SetCutOffPar(CutOffParameter)
     Npoints = 1000000
     hUni = ROOT.TH3F("hUni_%d"%(Nbins),"uniform distribution Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
@@ -106,27 +108,26 @@ if DoUniUniCutOffParameter:
         del hSmpl
 
 
-if DoUniUniContamination:
+elif (CalculationType == "Uni vs. Uni + 0.1% Gauss contamination"):
     
-    Npoints = 135000
+    Npoints = 1000000
     hUni = ROOT.TH3F("hUni_%d"%(Nbins),"Uniform Distribution Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
     for j in range(0,Npoints) :
-        hUni.Fill(rand.Uniform(),rand.Uniform(),rand.Uniform())
+        hUni.Fill(rand.Rndm(),rand.Rndm(),rand.Rndm())
     for sample in range(0,Nsamples) :
         hSmpl = ROOT.TH3F("hSmpl_%d_%d"%(sample,Nbins),"Uniform sample Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
         for j in range(0,int(Npoints*(1.-nContamination/100.))) : # uniform
-            hSmpl.Fill(rand.Uniform(),rand.Uniform(),rand.Uniform())
+            hSmpl.Fill(rand.Rndm(),rand.Rndm(),rand.Rndm())
         for j in range(0,int(Npoints*(nContamination/100.))) :    # contamination
             hSmpl.Fill(rand.Gaus(0.5,0.1),rand.Gaus(0.5,0.1),rand.Gaus(0.5,0.1))
         Phi[0] = etest.Histo3DETest( hUni , hSmpl )
-        if(sample%1==0):
+        if(sample%10==0):
             print "Sample %d" %(sample) +" ETest statistic for N=%d bins, sample %d, is %g"%(Nbins,sample,Phi)
         TEtest.Fill()
         del hSmpl
 
 
-
-if DoUniUniContCutoffPar:
+elif (CalculationType == "Uni vs. Uni + 0.1% Gauss contamination with different cutoffs"):
     etest.SetCutOffPar(CutOffParameter)
     Npoints = 1000000
     hUni = ROOT.TH3F("hUni_%d"%(Nbins),"Uniform Distribution Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
