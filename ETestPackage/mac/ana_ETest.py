@@ -11,8 +11,8 @@ ROOT.gStyle.SetOptStat(0000)
 DoUniFlat               = False
 DoUniUni                = False
 DoUniUniCutOffParameter = False
-DoUniUniContamination   = True
-DoUniUniContCutoffPar   = False
+DoUniUniContamination   = False
+DoUniUniContCutoffPar   = True
 
 Nbins   = 100
 
@@ -35,9 +35,10 @@ elif DoUniUniContamination:
     nContamination = 0.1    # [%] of contammination
     FileName    = "UniUni%.2fCont_%d"%(nContamination,N)
 elif DoUniUniContCutoffPar:
-    CutOffParameter = float(sys.argv[4])
+    Path        = Path+"/"+"DifferentCutoff"
+    CutOffParameter = float(sys.argv[2])
     nContamination = 0.1    # [%] of contammination
-    FileName    = "Uni_Cutoff%.2f_Gaus%.2fCont_Nbins_%d"%(CutOffParameter,nContamination,Nbins)
+    FileName    = "Uni_Cutoff%.1f_Gaus%.1fCont"%(CutOffParameter,nContamination) # only for N=30
 
 ana     = TPlots(Path+"/"+FileName+".root" ,"ETestTree")
 
@@ -94,10 +95,10 @@ if DoUniUniCutOffParameter:
 
 
 if DoUniUniContamination:
-#    # 95% confidence levels for uniform/uniform comparisons [x 10^{-6}] (Nbins:CL95)
-CL95list = {10:3.35 , 20:4.05 , 30:4.10 ,40:4.65 , 50:1} # 50 still missing.... also have 70....
+    # 95% confidence levels for uniform/uniform comparisons [x 10^{-6}] (Nbins:CL95)
+    CL95list = {10:3.35 , 20:4.05 , 30:4.10 ,40:4.65 , 50:1} # 50 still missing.... also have 70....
     # 95% confidence levels for uniform/constant comparisons [x 10^{-6}] (Nbins:CL95)
-#    CL95list = {10:1.675 , 20:1.975, 30:2.175 ,40:3.675 , 50:3.475}
+    #    CL95list = {10:1.675 , 20:1.975, 30:2.175 ,40:3.675 , 50:3.475}
     for key,val in CL95list.items():
         if key == N:
             CL95 = val
@@ -111,3 +112,22 @@ CL95list = {10:3.35 , 20:4.05 , 30:4.10 ,40:4.65 , 50:1} # 50 still missing.... 
     wait()
     canvas.SaveAs("~/Desktop/UniUni%.2fCont_%d.pdf"%(nContamination,N))
 
+
+
+
+
+if DoUniUniContCutoffPar:
+    #  95% confidence levels for uniform/uniform comparisons [x 10^{-6}] (cutoff : CL95)
+    CL95list = {0.1:6.25 , 0.2:5.55 , 0.3:5.15 ,0.4:4.85 , 0.5:4.65 , 0.6:4.45 , 0.7:4.35 , 0.8:4.15 , 0.9:4.05 , 1.0:3.95} # x 10^{-6}
+    for key,val in CL95list.items():
+        if key == CutOffParameter:
+            CL95 = val
+    print "CL95 = %g"%CL95
+    etest   = ETest(N)
+    canvas  = ana.CreateCanvas("uni./uni. + contamination" )
+    hPhi    = ana.H1("1e6*phi" , ROOT.TCut() , "HIST" , Nbins , 0 , 10. , "uni./uni. + %.2f%% cont. at %d binning, cutoff=%g"%(nContamination,N,CutOffParameter),"#phi x 10^{6}")
+    ana.Line(CL95 , 0 , CL95 , hPhi.GetMaximum()  , 2 , 2)
+    ana.Text(CL95 , hPhi.GetMaximum() , etest.ETestPower (hPhi , CL95) )
+    canvas.Update()
+    wait()
+    canvas.SaveAs("~/Desktop/"+FileName+".pdf")
