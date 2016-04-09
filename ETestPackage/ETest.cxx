@@ -8,15 +8,9 @@ ETest::ETest(const int Nbins , bool flag_UNDERFLOW_OVERFLOW){
     N       = (flag_UNDERFLOW_OVERFLOW) ? Nbins + 2 : Nbins;
     Low     = (flag_UNDERFLOW_OVERFLOW) ? 0         : 0;
     High    = (flag_UNDERFLOW_OVERFLOW) ? Nbins + 1 : Nbins ;
-    phiD    = 0. ;
-    phiMC   = 0. ;
-    phiDMC  = 0. ;
     step    = 1./(N-2);
     stepsq  = pow(step,2);
     d000    = log(0.66170*step);                    //"cube line picking" - avg. dist between 2 points
-    nD      = 0.    ;
-    nMC     = 0.;
-    Dpart   = MCpart    = DMCpart = 0;
 }
 
 
@@ -28,8 +22,8 @@ ETest::~ETest(){}
 
 
 double ETest::Histo3DETest(const TH3* hD, const TH3* hMC){
-    nD = nMC = 0;
     // Initilization
+    nD = nMC = phiD = phiMC = phiDMC = Dpart   = MCpart    = DMCpart =  0;
     for (int i1 = Low; i1 < High; i1++){    // move to arrays instead of histogram to reduce expensive GetBinContent() calculation time
         for (int i2 = Low; i2 < High; i2++) {
             for (int i3 = Low; i3 < High; i3++) {
