@@ -1,0 +1,7 @@
+cutoffparameter = 0.5000
+Sample 0 ETest statistic for N=30 bins, sample 0 is 3.64293e-06
+Sample 10 ETest statistic for N=30 bins, sample 10 is 3.23529e-06
+Sample 20 ETest statistic for N=30 bins, sample 20 is 3.50245e-06
+Sample 30 ETest statistic for N=30 bins, sample 30 is 3.67489e-06
+Sample 40 ETest statistic for N=30 bins, sample 40 is 3.24513e-06
+done filling 50 events in ETest statistic UniUni30_Cutoff0.5000
