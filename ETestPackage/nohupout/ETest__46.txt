@@ -1,4 +1,0 @@
-Traceback (most recent call last):
-  File "mac/calc_ETest.py", line 11, in <module>
-    FileNumber  = int(sys.argv[3])
-IndexError: list index out of range
