@@ -108,7 +108,7 @@ if DoUniUniCutOffParameter:
 
 if DoUniUniContamination:
     # 95% confidence levels for uniform/uniform comparisons [x 10^{-6}] (Nbins:CL95)
-    CL95list = {10:3.35 , 20:4.05 , 30:4.10 ,40:4.65 , 50:1} # 50 still missing.... also have 70....
+    CL95list = {10:3.35 , 20:4.05 , 30:4.10 ,40:4.65 , 50:4.85} # 50 still missing.... also have 70....
     # 95% confidence levels for uniform/constant comparisons [x 10^{-6}] (Nbins:CL95)
     #    CL95list = {10:1.675 , 20:1.975, 30:2.175 ,40:3.675 , 50:3.475}
     for key,val in CL95list.items():

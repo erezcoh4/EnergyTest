@@ -5,10 +5,10 @@ from array import array
 import numpy as n
 
 # run with:
-# > python mac/calc_ETest <Nbins> <Nsamples> <number> <cutoff parameter = 0.66170>
+# > python mac/calc_ETest <Nbins> <Nsamples> <number> <cutoff parameter = 0.66170> <contamination = 0.1%>
 
 if int(len(sys.argv)) < 2 :
-    print "run with: \n > python mac/calc_ETest <Nbins> <Nsamples> <number> <cutoff parameter = 0.6617>"
+    print "run with: \n > python mac/calc_ETest <Nbins> <Nsamples> <number> <cutoff parameter = 0.6617> <contamination = 0.1%>"
     sys.exit(0)
 
 Nbins       = int(sys.argv[1])
@@ -16,7 +16,7 @@ Nsamples    = int(sys.argv[2])
 FileNumber  = int(sys.argv[3])
 rand        = TRandom3(int(sys.argv[3]))
 
-CalculationType = "Uni vs. Uni + 0.1% Gauss contamination"
+CalculationType = "Uni/Uni + n% Contamination"
 
 
 Path    = "/home/erez/EnergyTest/ETestResults"
@@ -41,6 +41,10 @@ elif (CalculationType == "Uni vs. Uni + 0.1% Gauss contamination with different 
     CutOffParameter = float(sys.argv[4])
     nContamination = 0.1    # [%] of contammination
     FileName    = "Uni_Cutoff%.2f_Gaus%.2fCont_Nbins_%d"%(CutOffParameter,nContamination,Nbins)
+
+elif (CalculationType == "Uni/Uni + n% Contamination"):
+    nContamination = float(sys.argv[5])    # [%] of contammination
+    FileName    = "UniGaus%.2fpercentCont_Nbins_%d"%(nContamination,Nbins)
 
 
 
@@ -108,7 +112,7 @@ elif (CalculationType == "Uni vs. Uni with different cutoffs"):
         del hSmpl
 
 
-elif (CalculationType == "Uni vs. Uni + 0.1% Gauss contamination"):
+elif (CalculationType == "Uni vs. Uni + 0.1% Gauss contamination" or CalculationType == "Uni/Uni + n% Contamination"):
     
     Npoints = 1000000
     hUni = ROOT.TH3F("hUni_%d"%(Nbins),"Uniform Distribution Nbins=%d"%Nbins,Nbins,0,1,Nbins,0,1,Nbins,0,1)
