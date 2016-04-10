@@ -52,7 +52,7 @@ public:
     
     
     double  Histo3DETest (const TH3*, const TH3*);
-    TString   ETestPower (TH1F * hPhi , float CL95);
+    double   ETestPower (TH1F * hPhi , float CL95);
 
     
     void    SetCutOffPar (float fCOPar = 0.66170) {Printf("cutoffparameter = %.4f",fCOPar); d000 = log(fCOPar*step);};
